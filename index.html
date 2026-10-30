@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SBLA November Email Calendar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: a real month-style week grid (Sun–Sat, two weeks), each day a tile; click a day to open its full brief below. */
+:root{
+  --bg:#faf8fc; --surface:#ffffff; --ink:#24132e; --muted:#6d6077; --line:#e4dcea;
+  --plum:#3d1152; --plum-soft:#efe8f6;
+  --eye:#6b3fa0; --eye-soft:#f0e9f8;
+  --face:#a8456b; --face-soft:#f8e9ef;
+  --neck:#22707a; --neck-soft:#e3f2f3;
+  --dim:#f1eef3; --dim-ink:#9a8fa2;
+  --display:"DM Serif Display", Georgia, "Times New Roman", serif;
+  --body:"Inter", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#161019; --surface:#201828; --ink:#f1eaf5; --muted:#a99db3; --line:#3a2f43;
+  --plum:#c9a6e6; --plum-soft:#2e2139;
+  --eye:#b993e6; --eye-soft:#2c2140; --face:#e58aae; --face-soft:#3a2130; --neck:#6cc3cc; --neck-soft:#18343a;
+  --dim:#1c1621; --dim-ink:#6f6577; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#161019; --surface:#201828; --ink:#f1eaf5; --muted:#a99db3; --line:#3a2f43;
+  --plum:#c9a6e6; --plum-soft:#2e2139;
+  --eye:#b993e6; --eye-soft:#2c2140; --face:#e58aae; --face-soft:#3a2130; --neck:#6cc3cc; --neck-soft:#18343a;
+  --dim:#1c1621; --dim-ink:#6f6577; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.45}
+.wrap{max-width:1280px;margin:0 auto;padding-block:28px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:20px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(28px,4vw,40px);line-height:1.05;margin:0;text-wrap:balance}
+.sub{color:var(--muted);margin:6px 0 0;max-width:70ch}
+.legend{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:999px;white-space:nowrap}
+.dot{width:8px;height:8px;border-radius:50%}
+.k-site{background:var(--plum-soft);color:var(--plum)} .k-site .dot{background:var(--plum)}
+.k-eye{background:var(--eye-soft);color:var(--eye)} .k-eye .dot{background:var(--eye)}
+.k-face{background:var(--face-soft);color:var(--face)} .k-face .dot{background:var(--face)}
+.k-neck{background:var(--neck-soft);color:var(--neck)} .k-neck .dot{background:var(--neck)}
+.k-off{background:var(--dim);color:var(--dim-ink)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 18px;color:var(--muted);font-size:12.5px}
+.meta b{color:var(--ink);font-weight:600}
+
+.cal{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--line);display:grid;gap:1px}
+.dow{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:1px}
+.dow div{background:var(--surface);padding:8px 10px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:1px}
+.day{background:var(--surface);min-height:220px;padding:10px;display:flex;flex-direction:column;gap:8px;min-width:0;text-align:left;border:0;font:inherit;color:inherit;cursor:pointer;position:relative}
+.day:focus-visible{outline:2px solid var(--plum);outline-offset:-2px}
+.day.sel{box-shadow:inset 0 0 0 2px var(--plum)}
+.day.off{background:var(--dim);cursor:default;color:var(--dim-ink)}
+.dnum{display:flex;align-items:baseline;justify-content:space-between;gap:6px}
+.dnum span{font-family:var(--display);font-size:24px;line-height:1}
+.dnum small{font-size:11px;color:var(--muted)}
+.day.off .dnum small{color:var(--dim-ink)}
+.stripe{height:4px;border-radius:2px;margin:-2px 0 0}
+.s-site{background:var(--plum)} .s-eye{background:var(--eye)} .s-face{background:var(--face)} .s-neck{background:var(--neck)}
+.subj{font-weight:600;font-size:13px;line-height:1.3}
+.focus{font-size:12px;color:var(--muted)}
+.segs{margin-top:auto;display:grid;gap:4px;padding-top:6px;border-top:1px dashed var(--line)}
+.segs .lbl{font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.seg{font-size:11.5px;line-height:1.3;display:flex;gap:6px}
+.seg::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;margin-top:5px;background:currentColor;opacity:.5}
+.offnote{font-size:12px;line-height:1.35}
+
+.detail{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;display:grid;gap:16px}
+.detail h2{font-family:var(--display);font-weight:400;font-size:26px;margin:0;line-height:1.15;text-wrap:balance}
+.dgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:24px}
+dl{margin:0;display:grid;grid-template-columns:max-content minmax(0,1fr);gap:8px 14px}
+dt{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:2px}
+dd{margin:0}
+.sends{display:flex;flex-wrap:wrap;gap:8px}
+.send{border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:0;flex:1 1 220px}
+.send .t{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.send .s{font-weight:600;margin-top:2px}
+.send .a{font-size:12px;color:var(--muted);margin-top:2px}
+h3{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:13px}
+th,td{text-align:left;vertical-align:top;padding:8px 10px;border-bottom:1px solid var(--line)}
+th{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+td b{font-weight:600}
+.none{color:var(--muted);font-style:italic}
+.foot{color:var(--muted);font-size:12.5px;max-width:90ch}
+.foot a{color:var(--plum)}
+
+/* phone: agenda list */
+@media (max-width:820px){
+  .dow{display:none}
+  .week{grid-template-columns:minmax(0,1fr)}
+  .day{min-height:0}
+  .day.off.empty{display:none}
+  .dgrid{grid-template-columns:minmax(0,1fr)}
+  .dnum span{font-size:20px}
+}
+@media (prefers-reduced-motion:no-preference){.day{transition:box-shadow .15s}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>40% Off · Nov 3–10 Email Calendar</h1>
+      <p class="sub">One primary email a day. Each product day also carries one smaller same-day segment email, which replaces the primary for that audience. Click a day for its full brief.</p>
+    </div>
+    <div class="legend" aria-label="Legend">
+      <span class="chip k-site"><i class="dot"></i>Sitewide</span>
+      <span class="chip k-eye"><i class="dot"></i>Eye Lift Wand</span>
+      <span class="chip k-face"><i class="dot"></i>Liquid Facelift Wand</span>
+      <span class="chip k-neck"><i class="dot"></i>Neck · XL Wand</span>
+    </div>
+  </header>
+  <div class="meta">
+    <span><b>AM</b> 9am ET weekdays, 11am ET weekends · Randi Emails + GS | 180 Days Engaged</span>
+    <span><b>PM resend</b> 6pm ET · GS | 30 Days Engaged + High Value 30-Day Non-Openers</span>
+    <span><b>Excluded</b> spam, bounced 3+, ordered in last 14 days</span>
+  </div>
+
+  <div class="cal" role="grid" aria-label="November 2026 email calendar">
+    <div class="dow" role="row"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
+    <div class="week" role="row" id="w1"></div>
+    <div class="week" role="row" id="w2"></div>
+  </div>
+
+  <section class="detail" id="detail" aria-live="polite"></section>
+
+  <p class="foot">Planning calendar only. The 95% / 95% / 100% study belongs to the Eye Lift Wand only. Prices and review counts are from sbla.com on Oct 30, 2026; recheck on send day.</p>
+</div>
+
+<script>
+const DAYS = [
+ {d:1,dow:"Sun",off:true,note:"Already scheduled: Eye & Neck OG Wands (AM/PM)"},
+ {d:2,dow:"Mon",off:true,note:"Already scheduled: Eye Lift Wand (AM/PM)"},
+ {d:3,dow:"Tue",kind:"site",tag:"Sitewide",title:"Election Day: make the right choice",
+  subj:"Polls are open. So is 40% off.",prev:"The easiest decision you'll make today.",pm:"Still undecided? Every wand is 40% off.",
+  am:"9am ET",
+  rows:[["Angle","A playful nonpartisan ballot. Eye Lift Wand: “Platform: lifts hooded lids in minutes.” Liquid Facelift Wand: “Platform: visible results in 2 hours.” XL Wand: “Platform: a sharper, sculpted jawline.” Close with “Can't pick one? Vote for all three” → sets."],
+        ["Guardrails","No candidates, parties or red-vs-blue palette; stay in SBLA plum. One line like “Vote first, then treat yourself.”"],
+        ["CTA","Cast your vote → /collections/all"]],segs:[]},
+ {d:4,dow:"Wed",kind:"neck",tag:"XL Wand · Proof",title:"Neck, Chin & Jawline Sculpting Wand XL",
+  subj:"The science behind a sharper jawline",prev:"Harvard-studied. Clinically proven. 4.7 stars from 508 reviews.",pm:"How to melt fat from the outside, now 40% off",am:"9am ET",
+  rows:[["Science","Proprietary Fat Melting Complex (patent-pending) stimulates Irisin, a natural hormone studied by Harvard Medical research and published in Nature."],
+        ["Clinical","“Clinically proven to re-sculpt the entire neck, chin & jawline.” Results in 14 to 30 days."],
+        ["Customer","4.7 stars, 508 reviews, 95% would recommend. Back in stock; “sells out frequently.”"],
+        ["Industry","Harvard / Nature Irisin research (no press on the XL PDP)."],
+        ["Offer","$77.40 (reg. $129) → /products/neck-chin-jawline-sculpting-wand-xl"]],
+  segs:[["XL refill","Bought XL (single or duo) 15–60 days ago","Running low? Keep the sculpt going.","Leads with XL Duo Set ($135, about 104 days) + cumulative-use copy; Original + XL Duo ($117) second"]]},
+ {d:5,dow:"Thu",kind:"face",tag:"Facelift · Results",title:"Liquid Facelift Wand",
+  subj:"Visible results in 2 hours. Now 40% off.",prev:"The Liquid Facelift Wand. No needles, plus a free refill cartridge.",pm:"Forehead lines, smile lines, sagging: see the difference",am:"9am ET",
+  rows:[["Angle","A results timeline with before/afters. 2 hours: visible after application. 21 days: most results appear. 4 weeks: firmer, fuller, fewer visible lines."],
+        ["Hero stat","100% of participants saw a visible reduction in forehead lines, nasolabial folds and skin laxity."],
+        ["Offer","$107.40 (reg. $179) + complimentary refill cartridge → /products/liquid-facelift-wand"]],
+  segs:[["Facelift refill","Bought Facelift 15–60 days ago","Keep your results, 40% off for life","Cumulative-use copy + Auto-Replenish at 40% off for life"]]},
+ {d:6,dow:"Fri",kind:"site",tag:"Sitewide",title:"Weekend reset, head to neck",
+  subj:"Your weekend reset: 40% off, head to neck",prev:"Every wand and set, including Your Best Face Set at $228 (reg. $380).",pm:"One routine. Three wands. 40% off.",am:"9am ET",
+  rows:[["Angle","A routine by zone: Eyes, Face, Neck, then sets. “Weekend Reset” echoes two of the top 6 non-BFCM campaigns (May 2025)."],
+        ["Sets","Your Best Face Set $228 · XL Duo Set $135 · Original + XL Duo $117. Leave out Power Trio, Ultimate and Essential (unavailable)."],
+        ["CTA","Build my routine → /collections/all"]],segs:[]},
+ {d:7,dow:"Sat",kind:"eye",tag:"Eye Lift · Results",title:"Eye Lift Wand",
+  subj:"Hooded lids, before & after (unretouched)",prev:"Real customers aged 50 to 62. Visible lift in minutes.",pm:"Same eyes, minutes later",am:"11am ET",
+  rows:[["Angle","Pure before/afters: Genevieve C. (54), Grant (59), Arlie (57), Randi (55), Robert (62), Genevieve A. (50), “Actual unretouched images.” One UGC video still. No stats; Monday carries the study."],
+        ["Offer","$89.40 (reg. $149) → /products/eye-lift-wand"]],
+  segs:[["Eye Lift refill","Bought Eye Lift 15–60 days ago","Lifted lids, every day. 40% off for life.","Cumulative-use copy + Auto-Replenish at 40% off for life"]]},
+ {d:8,dow:"Sun",kind:"neck",tag:"XL + Duos · Results",title:"XL Wand + Duo Sets",
+  subj:"Jowls and double chin, before & after",prev:"Real side profiles. Real results. XL Duo now $135.",pm:"Your best side profile, 40% off",am:"11am ET",
+  rows:[["Angle","Side-profile before/afters marked Day 14 and Day 30. One line: “Over the course of 14 to 30 days you will see a dramatic fat reduction in the jowls and chin area.”"],
+        ["Products","XL $77.40 · XL Duo Set $135 (reg. $258) · Original + XL Duo $117 (reg. $218) · Original Duo $96 (reg. $178)"],
+        ["CTA","Shop neck → /collections/neck"]],
+  segs:[["Original → XL upgrade","Bought the original neck wand, never the XL","Upgrade available: the XL, 40% off","Original vs. XL side by side with XL before/afters; Original + XL Duo ($117) as the bridge, since the PDP says to keep the original for mornings"]]},
+ {d:9,dow:"Mon",kind:"eye",tag:"Eye Lift · Proof",title:"Eye Lift Wand",
+  subj:"95% saw a lifted eyelid. Here's the study.",prev:"31 participants aged 40 to 65. 611 reviews. Now $89.40.",pm:"The eye lift with no surgeon",am:"9am ET",
+  rows:[["Science","SBLA66Peptide™ (patent-pending) + niacinamide, vitamin C, caffeine, hyaluronic acid, acetyl glucosamine."],
+        ["Clinical","Independent controlled study, 31 participants aged 40–65: 95% saw a significant eyelid lift; 95% saw fewer lines and wrinkles; 100% saw less crepey skin and under-eye puffiness."],
+        ["Customer","4.7 stars, 611 reviews, 93% would recommend. Sold out 7x."],
+        ["Industry","Allure Pick Spotlight; Vogue, Harper's Bazaar, Prevention logos; “Skip the surgeon…” (outlet to confirm)."],
+        ["CTA","Get my Eye Lift Wand → /products/eye-lift-wand"]],
+  segs:[["Nov 7 clickers","Clicked the Nov 7 Eye Lift email, no order since","You saw the results. Here's the study.","References Saturday's before/afters, then the proof stack"]]},
+ {d:10,dow:"Tue",kind:"site",tag:"Sitewide",title:"Customer favorites",
+  subj:"The 3 wands everyone's buying, 40% off",prev:"Eye Lift, Facelift and XL, ranked by your reviews.",pm:"1,000+ five-star reasons to try SBLA",am:"9am ET",
+  rows:[["Angle","Reviews-led recap: one hero image and one short review per wand, star ratings, then sets. 1,005 five-star reviews across Eye Lift (448), XL (401), XL Duo (87) and Facelift (69); recount on send day."],
+        ["Note","40% continues past today. No last call and no Singles Day tease."],
+        ["CTA","Shop the favorites → /collections/all"]],segs:[]},
+ {d:11,dow:"Wed",off:true,note:"Singles Day: new email look, planned separately"},
+ {d:12,dow:"Thu",off:true,empty:true},{d:13,dow:"Fri",off:true,empty:true},{d:14,dow:"Sat",off:true,empty:true}
+];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function tile(x){
+  const el=document.createElement(x.off?"div":"button");
+  el.className="day"+(x.off?" off":"")+(x.empty?" empty":"");
+  el.setAttribute("role","gridcell");
+  let h=`<div class="dnum"><span>${x.d}</span><small>${x.dow}</small></div>`;
+  if(x.off){ h+= x.note?`<div class="offnote">${esc(x.note)}</div>`:""; el.innerHTML=h; return el;}
+  el.type="button"; el.dataset.d=x.d;
+  el.setAttribute("aria-label",`Nov ${x.d}: ${x.tag}. ${x.subj}`);
+  h+=`<div class="stripe s-${x.kind}"></div><span class="chip k-${x.kind}" style="align-self:flex-start">${esc(x.tag)}</span>`;
+  h+=`<div class="subj">${esc(x.subj)}</div><div class="focus">${esc(x.title)} · AM ${x.am}, PM 6pm ET</div>`;
+  if(x.segs.length){h+=`<div class="segs"><div class="lbl">Segment email</div>${x.segs.map(s=>`<div class="seg"><span><b>${esc(s[0])}</b><br>“${esc(s[2])}”</span></div>`).join("")}</div>`}
+  else h+=`<div class="segs"><div class="lbl">No segment email</div></div>`;
+  el.innerHTML=h; el.addEventListener("click",()=>{show(x.d);document.getElementById("detail").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});}); return el;
+}
+const w1=document.getElementById("w1"),w2=document.getElementById("w2");
+DAYS.forEach((x,i)=>(i<7?w1:w2).appendChild(tile(x)));
+function show(d){
+  const x=DAYS.find(y=>y.d===d); if(!x||x.off) return;
+  document.querySelectorAll(".day").forEach(b=>b.classList.toggle("sel",b.dataset.d==String(d)));
+  const segs=x.segs.length?`<div class="tbl"><table><thead><tr><th>Segment email</th><th>Who gets it</th><th>Subject line</th><th>What's different</th></tr></thead><tbody>${x.segs.map(s=>`<tr><td><b>${esc(s[0])}</b></td><td>${esc(s[1])}</td><td>${esc(s[2])}</td><td>${esc(s[3])}</td></tr>`).join("")}</tbody></table></div>`
+   :`<p class="none">Sitewide day: everyone gets the primary email.</p>`;
+  document.getElementById("detail").innerHTML=`
+   <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px"><span class="chip k-${x.kind}"><i class="dot"></i>${esc(x.tag)}</span><span class="meta">${x.dow}, Nov ${x.d}, 2026</span></div>
+   <h2>${esc(x.title)}</h2>
+   <div class="sends">
+     <div class="send"><div class="t">AM · ${x.am}</div><div class="s">${esc(x.subj)}</div><div class="a">Preview: ${esc(x.prev)}</div></div>
+     <div class="send"><div class="t">PM resend · 6pm ET</div><div class="s">${esc(x.pm)}</div><div class="a">To 30-day engaged and high-value non-openers</div></div>
+   </div>
+   <div class="dgrid">
+     <div><h3>Primary email</h3><dl>${x.rows.map(r=>`<dt>${esc(r[0])}</dt><dd>${esc(r[1])}</dd>`).join("")}</dl></div>
+     <div style="min-width:0"><h3>Same-day segment email</h3>${segs}</div>
+   </div>`;
+}
+show(4);
+</script>
+
+</body>
+</html>
