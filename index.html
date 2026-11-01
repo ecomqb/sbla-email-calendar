@@ -105,7 +105,7 @@ td b{font-weight:600}
 <div class="wrap">
   <header>
     <div>
-      <h1>40% Off · Nov 3–10 Email Calendar</h1>
+      <h1>40% Off · Nov 4–10 Email Calendar</h1>
       <p class="sub">One primary email a day. Each product day also carries one smaller same-day segment email, which replaces the primary for that audience. Click a day for its full brief.</p>
     </div>
     <div class="legend" aria-label="Legend">
@@ -136,13 +136,19 @@ td b{font-weight:600}
 const DAYS = [
  {d:1,dow:"Sun",off:true,note:"Already scheduled: Eye & Neck OG Wands (AM/PM)"},
  {d:2,dow:"Mon",off:true,note:"Already scheduled: Eye Lift Wand (AM/PM)"},
- {d:3,dow:"Tue",kind:"site",tag:"Sitewide",title:"Election Day: make the right choice",
-  subj:"Polls are open. So is 40% off.",prev:"The easiest decision you'll make today.",pm:"Still undecided? Every wand is 40% off.",
-  am:"9am ET",
-  rows:[["Angle","A playful nonpartisan ballot. Eye Lift Wand: “Platform: lifts hooded lids in minutes.” Liquid Facelift Wand: “Platform: visible results in 2 hours.” XL Wand: “Platform: a sharper, sculpted jawline.” Close with “Can't pick one? Vote for all three” → sets."],
-        ["Guardrails","No candidates, parties or red-vs-blue palette; stay in SBLA plum. One line like “Vote first, then treat yourself.”"],
-        ["CTA","Cast your vote → /collections/all"]],segs:[]},
- {d:4,dow:"Wed",kind:"neck",tag:"XL Wand · Proof",title:"Neck, Chin & Jawline Sculpting Wand XL",
+ {d:3,dow:"Tue",off:true,note:"Covered separately (not in this plan)"},
+ {d:4,dow:"Wed",kind:"site",tag:"Sitewide",title:"Head to neck, all 40% off",
+  subj:"Eyes, face, neck: everything is 40% off",prev:"Every wand and set, including Your Best Face Set at $228 (reg. $380).",pm:"One routine. Three wands. 40% off.",am:"9am ET",
+  rows:[["Angle","A routine by zone: Eyes (Eye Lift Wand), Face (Liquid Facelift Wand), Neck (XL / Duos), then sets."],
+        ["Sets","Your Best Face Set $228 · XL Duo Set $135 · Original + XL Duo $117. Leave out Power Trio, Ultimate and Essential (unavailable)."],
+        ["CTA","Build my routine → /collections/all"]],segs:[]},
+ {d:5,dow:"Thu",kind:"face",tag:"Facelift · Results",title:"Liquid Facelift Wand",
+  subj:"Visible results in 2 hours. Now 40% off.",prev:"The Liquid Facelift Wand. No needles, plus a free refill cartridge.",pm:"Forehead lines, smile lines, sagging: see the difference",am:"9am ET",
+  rows:[["Angle","A results timeline with before/afters. 2 hours: visible after application. 21 days: most results appear. 4 weeks: firmer, fuller, fewer visible lines."],
+        ["Hero stat","100% of participants saw a visible reduction in forehead lines, nasolabial folds and skin laxity."],
+        ["Offer","$107.40 (reg. $179) + complimentary refill cartridge → /products/liquid-facelift-wand"]],
+  segs:[["Facelift refill","Bought Facelift 15–60 days ago","Keep your results, 40% off for life","Cumulative-use copy + Auto-Replenish at 40% off for life"]]},
+ {d:6,dow:"Fri",kind:"neck",tag:"XL Wand · Proof",title:"Neck, Chin & Jawline Sculpting Wand XL",
   subj:"The science behind a sharper jawline",prev:"Harvard-studied. Clinically proven. 4.7 stars from 508 reviews.",pm:"How to melt fat from the outside, now 40% off",am:"9am ET",
   rows:[["Science","Proprietary Fat Melting Complex (patent-pending) stimulates Irisin, a natural hormone studied by Harvard Medical research and published in Nature."],
         ["Clinical","“Clinically proven to re-sculpt the entire neck, chin & jawline.” Results in 14 to 30 days."],
@@ -150,17 +156,6 @@ const DAYS = [
         ["Industry","Harvard / Nature Irisin research (no press on the XL PDP)."],
         ["Offer","$77.40 (reg. $129) → /products/neck-chin-jawline-sculpting-wand-xl"]],
   segs:[["XL refill","Bought XL (single or duo) 15–60 days ago","Running low? Keep the sculpt going.","Leads with XL Duo Set ($135, about 104 days) + cumulative-use copy; Original + XL Duo ($117) second"]]},
- {d:5,dow:"Thu",kind:"face",tag:"Facelift · Results",title:"Liquid Facelift Wand",
-  subj:"Visible results in 2 hours. Now 40% off.",prev:"The Liquid Facelift Wand. No needles, plus a free refill cartridge.",pm:"Forehead lines, smile lines, sagging: see the difference",am:"9am ET",
-  rows:[["Angle","A results timeline with before/afters. 2 hours: visible after application. 21 days: most results appear. 4 weeks: firmer, fuller, fewer visible lines."],
-        ["Hero stat","100% of participants saw a visible reduction in forehead lines, nasolabial folds and skin laxity."],
-        ["Offer","$107.40 (reg. $179) + complimentary refill cartridge → /products/liquid-facelift-wand"]],
-  segs:[["Facelift refill","Bought Facelift 15–60 days ago","Keep your results, 40% off for life","Cumulative-use copy + Auto-Replenish at 40% off for life"]]},
- {d:6,dow:"Fri",kind:"site",tag:"Sitewide",title:"Weekend reset, head to neck",
-  subj:"Your weekend reset: 40% off, head to neck",prev:"Every wand and set, including Your Best Face Set at $228 (reg. $380).",pm:"One routine. Three wands. 40% off.",am:"9am ET",
-  rows:[["Angle","A routine by zone: Eyes, Face, Neck, then sets. “Weekend Reset” echoes two of the top 6 non-BFCM campaigns (May 2025)."],
-        ["Sets","Your Best Face Set $228 · XL Duo Set $135 · Original + XL Duo $117. Leave out Power Trio, Ultimate and Essential (unavailable)."],
-        ["CTA","Build my routine → /collections/all"]],segs:[]},
  {d:7,dow:"Sat",kind:"eye",tag:"Eye Lift · Results",title:"Eye Lift Wand",
   subj:"Hooded lids, before & after (unretouched)",prev:"Real customers aged 50 to 62. Visible lift in minutes.",pm:"Same eyes, minutes later",am:"11am ET",
   rows:[["Angle","Pure before/afters: Genevieve C. (54), Grant (59), Arlie (57), Randi (55), Robert (62), Genevieve A. (50), “Actual unretouched images.” One UGC video still. No stats; Monday carries the study."],
