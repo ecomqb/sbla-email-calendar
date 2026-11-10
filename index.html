@@ -156,7 +156,7 @@ td b{font-weight:600}
 
   <section class="detail" id="detail" aria-live="polite"></section>
 
-  <p class="foot">Planning only; nothing is built in Klaviyo. The 95% / 95% / 100% study belongs to the Eye Lift Wand only; XL copy uses "clinically proven to re-sculpt" with no percentages. 50% prices assume half off regular price (Eye Lift $74.50, XL $64.50, Facelift $89.50); confirm set prices and the Eye Lift ship date before build.</p>
+  <p class="foot">Planning only; nothing is built in Klaviyo. The 95% / 95% / 100% study belongs to the Eye Lift Wand only; XL copy uses "clinically proven to re-sculpt" with no percentages. 50% prices assume half off regular price (Eye Lift $74.50, XL $64.50, Facelift $89.50); confirm set prices before build. The Eye Lift Wand is on pre-order until it comes back in stock on Tue Nov 24.</p>
 </div>
 
 <script>
@@ -224,7 +224,7 @@ const DAYS = [
   s("PM","Singles Day Extended 2","site","Countdown","Final hours: Singles Day ends tonight","The extension ends at midnight ET.","Countdown timer, then the three wands. Don't tease Black Friday.","Shop before midnight → "+ALL)]},
  {d:13,dow:"Fri",ph:"bf",title:"Black Friday starts",sends:[
   s("AM","BF 1","site","Launch","Black Friday starts now: 50% off + a free gift","Everything is 50% off, plus a free Lip Plumper on orders over $150.","Black Friday look debuts. Offer-first hero, then the three wands at 50% off and a Lip Plumper band explaining the $150 threshold.","Shop Black Friday → "+ALL),
-  s("PM","BF 2","eye","Pre-order","Pre-order the Eye Lift Wand before they're gone","50% off, plus a free Lip Plumper on orders over $150.","Scarcity: sold out 7x, so pre-order now to lock in 50% off. Lifts hooded lids in minutes. Add the ship date (to confirm).","Pre-order now → "+EYE)]},
+  s("PM","BF 2","eye","Pre-order","Pre-order the Eye Lift Wand before they're gone","50% off, plus a free Lip Plumper on orders over $150.","Scarcity: sold out 10 times, so pre-order now to lock in 50% off. Lifts hooded lids in minutes. Add the ship date (to confirm).","Pre-order now → "+EYE)]},
  {d:14,dow:"Sat",ph:"bf",title:"XL science · storewide results",sends:[
   s("AM","BF 3","neck","Science","Fat-melting science, now 50% off","Harvard-researched Irisin, in a wand. Plus a free Lip Plumper over $150.","Fat Melting Complex (patent-pending) stimulates Irisin, a hormone studied by Harvard Medical research and published in Nature. Use \"clinically proven to re-sculpt\" with no percentages. 4.7★ from 508 reviews.","Get the XL → "+XL),
   s("PM","BF 4","site","Results","Before & after: eyes, face and neck","Real, unretouched results from every wand. All 50% off.","One before/after per wand: Eye Lift (lifted lids in minutes), Facelift (visible in 2 hours), XL side profile. Results only, no stats.","See the results → "+ALL)]},
@@ -253,8 +253,8 @@ const DAYS = [
  {d:23,dow:"Mon",ph:"bf",title:"Thanksgiving week · XL",sends:[
   s("AM","BF 19","site","Launch","Thanksgiving week: 50% off + a free gift","Everything is half off, plus a free Lip Plumper over $150.","Week-of-Thanksgiving reset: offer-first hero, three wands, gift band.","Shop Black Friday → "+ALL),
   s("PM","BF 20","neck","Science + results","The science of a sharper jawline, 50% off","Harvard-researched science and real side profiles.","Irisin science, then XL side-profile before/afters. No percentages.","Get the XL → "+XL)]},
- {d:24,dow:"Tue",ph:"bf",title:"Eye Lift pre-order · sets",sends:[
-  s("AM","BF 21","eye","Science + results","Pre-order the Eye Lift Wand before it's gone","95% saw a lifted eyelid. Now 50% off.","Short study recap plus two before/afters. Pre-order urgency.","Pre-order now → "+EYE),
+ {d:24,dow:"Tue",ph:"bf",title:"Eye Lift back in stock · sets",note:"Eye Lift Wand restock day. Eye Lift emails switch from pre-order to in stock from here on.",sends:[
+  s("AM","BF 21","eye","Back in stock","It's back: the Eye Lift Wand, 50% off","Sold out 10 times. Back in stock just in time for Black Friday.","Back-in-stock announcement: \"Back in stock\" stamp on the hero, lifted lids in minutes, one unretouched before/after, the 95% study line, then the free Lip Plumper band (orders over $150). Sell-out urgency. Optional same-day segment email: Eye Lift viewers and pre-order or waitlist sign-ups, if that list exists.","Shop the Eye Lift Wand → "+EYE),
   s("PM","BF 22","site","Sets","Sets that unlock a free Lip Plumper","Your Best Face Set, XL Duo and more, all 50% off.","Sets only, each tagged with whether it clears $150 (confirm set prices).","Shop sets → "+ALL)]},
  {d:25,dow:"Wed",ph:"bf",title:"Facelift results · gifting",sends:[
   s("AM","BF 23","face","Results","Smoother, firmer, fuller: Facelift before & afters","Visible in 2 hours. Now 50% off.","Before/afters only.","See the results → "+FACE),
@@ -264,7 +264,7 @@ const DAYS = [
   s("PM","BF 26","site","Tease","Tomorrow: a free Lip Plumper with any order","Our Black Friday Special Event starts at midnight.","Teases the Special Event. Optional: if a tease might hold back Thursday orders, swap in an Eye Lift pre-order email.","Get a reminder → "+ALL)]},
  {d:27,dow:"Fri",ph:"ev",title:"Black Friday Special Event",sends:[
   s("AM","BF Event 1","site","Launch","Black Friday Special Event: a free gift with every order","50% off everything, plus a free Lip Plumper with any purchase. No minimum.","Special Event look. Offer-first hero, then \"no minimum\" in big type, then the three wands.","Shop the event → "+ALL),
-  s("PM","BF Event 2","eye","Pre-order","Eye Lift Wand, 50% off + a free Lip Plumper","Pre-order now, before they're all gone.","Best-seller framing, one before/after, pre-order urgency.","Pre-order now → "+EYE)]},
+  s("PM","BF Event 2","eye","Back in stock","Eye Lift Wand, 50% off + a free Lip Plumper","Back in stock. Get yours before it sells out again.","Best-seller framing, one before/after, sell-out urgency.","Get my Eye Lift Wand → "+EYE)]},
  {d:28,dow:"Sat",ph:"ev",title:"XL results · reviews",sends:[
   s("AM","BF Event 3","neck","Results","Jawline goals, 50% off + a free gift","XL before & afters, and a free Lip Plumper with any order.","XL and Duo side-profile before/afters. No percentages.","Shop neck → /collections/neck"),
   s("PM","BF Event 4","site","Reviews","1,000+ five-star reviews + a free gift","Every wand 50% off, free Lip Plumper with any order.","Reviews wall, then the three wands.","Shop the event → "+ALL)]},
