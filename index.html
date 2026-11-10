@@ -98,6 +98,28 @@ td b{font-weight:600}
   .dnum span{font-size:20px}
 }
 @media (prefers-reduced-motion:no-preference){.day{transition:box-shadow .15s}}
+/* Two-send days (Nov 11 on): each send is its own line on the tile */
+.phase{font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:2px 7px;border-radius:4px;align-self:flex-start}
+.p-sd{background:#fbe3ee;color:#9b2457} .p-bf{background:#24132e;color:#fff} .p-ev{background:#c8962e;color:#1b1206} .p-cm{background:#1f4f8a;color:#fff} .p-40{background:var(--plum-soft);color:var(--plum)}
+.slot{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 6px;font-size:12px;line-height:1.3;padding-top:6px;border-top:1px dashed var(--line)}
+.slot:first-of-type{border-top:0;padding-top:0}
+.slot .tm{font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--muted);padding-top:1px}
+.slot .code{font-weight:700;font-size:11px;display:block}
+.slot .code i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:1px}
+.slot .st{grid-column:2;font-weight:600}
+.i-site{background:var(--plum)} .i-eye{background:var(--eye)} .i-face{background:var(--face)} .i-neck{background:var(--neck)}
+.day.past{opacity:.62}
+.day.past:hover,.day.past.sel{opacity:1}
+.offer{border-left:3px solid var(--plum);padding:6px 10px;background:var(--plum-soft);border-radius:0 6px 6px 0;font-weight:600}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:12px}
+.card{border:1px solid var(--line);border-radius:8px;padding:14px;display:grid;gap:10px;align-content:start;min-width:0}
+.card .top{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.card .subjL{font-weight:700;font-size:15px;line-height:1.3}
+.card .pv{color:var(--muted);font-size:13px;margin-top:-6px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px}
+.tabs button{font:inherit;font-size:12px;font-weight:600;padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+@media (max-width:820px){.day.past{display:none}.show-past .day.past{display:flex}}
 </style>
 </head>
 <body>
@@ -105,11 +127,11 @@ td b{font-weight:600}
 <div class="wrap">
   <header>
     <div>
-      <h1>40% Off · Nov 4–10 Email Calendar</h1>
-      <p class="sub">One primary email a day. Each product day also carries one smaller same-day segment email, which replaces the primary for that audience. Click a day for its full brief.</p>
+      <h1>November Email Calendar</h1>
+      <p class="sub">40% off (Nov 4–10), Singles Day (Nov 11–12), Black Friday (Nov 13–26), then the Black Friday Special Event and Cyber Monday (Nov 27–30). From Nov 11 the PM slot is its own email, not a resend. Click a day for the brief.</p>
     </div>
     <div class="legend" aria-label="Legend">
-      <span class="chip k-site"><i class="dot"></i>Sitewide</span>
+      <span class="chip k-site"><i class="dot"></i>Storewide</span>
       <span class="chip k-eye"><i class="dot"></i>Eye Lift Wand</span>
       <span class="chip k-face"><i class="dot"></i>Liquid Facelift Wand</span>
       <span class="chip k-neck"><i class="dot"></i>Neck · XL Wand</span>
@@ -117,22 +139,36 @@ td b{font-weight:600}
   </header>
   <div class="meta">
     <span><b>AM</b> 9am ET weekdays, 11am ET weekends · Randi Emails + GS | 180 Days Engaged</span>
-    <span><b>PM resend</b> 6pm ET · GS | 30 Days Engaged + High Value 30-Day Non-Openers</span>
+    <span><b>PM</b> 6pm ET · Nov 4–10: resend to 30-day engaged + high-value non-openers · Nov 11 on: its own email</span>
     <span><b>Excluded</b> spam, bounced 3+, ordered in last 14 days</span>
+  </div>
+  <div class="tabs" role="group" aria-label="Phase">
+    <button type="button" data-ph="all" aria-pressed="true">Whole month</button>
+    <button type="button" data-ph="sd">Singles Day</button>
+    <button type="button" data-ph="bf">Black Friday</button>
+    <button type="button" data-ph="ev">Special Event + Cyber Monday</button>
   </div>
 
   <div class="cal" role="grid" aria-label="November 2026 email calendar">
     <div class="dow" role="row"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
-    <div class="week" role="row" id="w1"></div>
-    <div class="week" role="row" id="w2"></div>
+    <div id="weeks" style="display:grid;gap:1px"></div>
   </div>
 
   <section class="detail" id="detail" aria-live="polite"></section>
 
-  <p class="foot">Planning calendar only. The 95% / 95% / 100% study belongs to the Eye Lift Wand only. Prices and review counts are from sbla.com on Oct 30, 2026; recheck on send day.</p>
+  <p class="foot">Planning only; nothing is built in Klaviyo. The 95% / 95% / 100% study belongs to the Eye Lift Wand only; XL copy uses "clinically proven to re-sculpt" with no percentages. 50% prices assume half off regular price (Eye Lift $74.50, XL $64.50, Facelift $89.50); confirm set prices and the Eye Lift ship date before build.</p>
 </div>
 
 <script>
+const OFFERS={
+ sd:"50% off storewide, Singles Day only (extended through Nov 12)",
+ bf:"50% off storewide + free Lip Plumper on orders over $150",
+ ev:"50% off storewide + free Lip Plumper with any purchase",
+};
+const PH={sd:["p-sd","Singles Day"],bf:["p-bf","Black Friday"],ev:["p-ev","BF Special Event"],cm:["p-cm","Cyber Monday"],"40":["p-40","40% off"]};
+// s(time, code, kind, type, subject, preview, angle, cta)
+const s=(t,code,kind,type,subj,prev,angle,cta)=>({t,code,kind,type,subj,prev,angle,cta});
+const EYE="/products/eye-lift-wand", XL="/products/neck-chin-jawline-sculpting-wand-xl", FACE="/products/liquid-facelift-wand", ALL="/collections/all";
 const DAYS = [
  {d:1,dow:"Sun",off:true,note:"Already scheduled: Eye & Neck OG Wands (AM/PM)"},
  {d:2,dow:"Mon",off:true,note:"Already scheduled: Eye Lift Wand (AM/PM)"},
@@ -180,33 +216,133 @@ const DAYS = [
   rows:[["Angle","Reviews-led recap: one hero image and one short review per wand, star ratings, then sets. 1,005 five-star reviews across Eye Lift (448), XL (401), XL Duo (87) and Facelift (69); recount on send day."],
         ["Note","40% continues past today. No last call and no Singles Day tease."],
         ["CTA","Shop the favorites → /collections/all"]],segs:[]},
- {d:11,dow:"Wed",off:true,note:"Singles Day: new email look, planned separately"},
- {d:12,dow:"Thu",off:true,empty:true},{d:13,dow:"Fri",off:true,empty:true},{d:14,dow:"Sat",off:true,empty:true}
+ {d:11,dow:"Wed",ph:"sd",title:"Singles Day",note:"New Singles Day email look.",sends:[
+  s("AM","Singles Day 1","site","Launch","Singles Day: 50% off everything, today only","One day. Every wand and set, half off.","New Singles Day look. One offer, one day: hero the three wands at 50% off (Eye Lift $74.50, XL $64.50, Facelift $89.50), then sets.","Shop 50% off → "+ALL),
+  s("PM","Singles Day 2","site","Countdown","Singles Day ends at midnight","Hours left at 50% off everything.","Countdown timer up top, then the three wands. Short and urgent. Say \"Singles Day ends\", not \"50% off ends\", since 50% continues into Black Friday.","Shop before midnight → "+ALL)]},
+ {d:12,dow:"Thu",ph:"sd",title:"Singles Day Extended",note:"Same Singles Day look.",sends:[
+  s("AM","Singles Day Extended 1","site","Extension","Singles Day, extended one more day","Missed it? 50% off everything is back until midnight.","\"Extended\" stamp over the Singles Day hero. Same three wands and sets.","Shop 50% off → "+ALL),
+  s("PM","Singles Day Extended 2","site","Countdown","Final hours: Singles Day ends tonight","The extension ends at midnight ET.","Countdown timer, then the three wands. Don't tease Black Friday.","Shop before midnight → "+ALL)]},
+ {d:13,dow:"Fri",ph:"bf",title:"Black Friday starts",sends:[
+  s("AM","BF 1","site","Launch","Black Friday starts now: 50% off + a free gift","Everything is 50% off, plus a free Lip Plumper on orders over $150.","Black Friday look debuts. Offer-first hero, then the three wands at 50% off and a Lip Plumper band explaining the $150 threshold.","Shop Black Friday → "+ALL),
+  s("PM","BF 2","eye","Pre-order","Pre-order the Eye Lift Wand before they're gone","50% off, plus a free Lip Plumper on orders over $150.","Scarcity: sold out 7x, so pre-order now to lock in 50% off. Lifts hooded lids in minutes. Add the ship date (to confirm).","Pre-order now → "+EYE)]},
+ {d:14,dow:"Sat",ph:"bf",title:"XL science · storewide results",sends:[
+  s("AM","BF 3","neck","Science","Fat-melting science, now 50% off","Harvard-researched Irisin, in a wand. Plus a free Lip Plumper over $150.","Fat Melting Complex (patent-pending) stimulates Irisin, a hormone studied by Harvard Medical research and published in Nature. Use \"clinically proven to re-sculpt\" with no percentages. 4.7★ from 508 reviews.","Get the XL → "+XL),
+  s("PM","BF 4","site","Results","Before & after: eyes, face and neck","Real, unretouched results from every wand. All 50% off.","One before/after per wand: Eye Lift (lifted lids in minutes), Facelift (visible in 2 hours), XL side profile. Results only, no stats.","See the results → "+ALL)]},
+ {d:15,dow:"Sun",ph:"bf",title:"Eye Lift science + results",sends:[
+  s("AM","BF 5","eye","Science + results","95% saw a lifted eyelid. Pre-order at 50% off.","The study, the before & afters, and a free Lip Plumper over $150.","Study: 31 participants aged 40–65; 95% saw a significant lift, 95% fewer lines, 100% less crepiness and puffiness. Then unretouched before/afters. Pre-order now, don't miss out.","Pre-order now → "+EYE)]},
+ {d:16,dow:"Mon",ph:"bf",title:"Reviews · Facelift",sends:[
+  s("AM","BF 6","site","Reviews","1,000+ five-star reviews, all 50% off","What customers say about every wand. Free Lip Plumper over $150.","One short review and star rating per wand, then sets. Recount five-star reviews on send day.","Shop the favorites → "+ALL),
+  s("PM","BF 7","face","Science + results","Visible results in 2 hours, now 50% off","The Liquid Facelift Wand: the study and the before & afters.","100% saw a visible reduction in forehead lines, nasolabial folds and skin laxity. Then before/afters. Confirm the free refill cartridge still applies.","See your results → "+FACE)]},
+ {d:17,dow:"Tue",ph:"bf",title:"Free gift · XL results",sends:[
+  s("AM","BF 8","site","Gift with purchase","Your free Lip Plumper is waiting","Spend $150, get it free. Here's the easiest way there.","Cart builder: combos that clear $150 at 50% off, such as Eye Lift + Facelift ($164) or a set. Verify set prices.","Build my order → "+ALL),
+  s("PM","BF 9","neck","Results","Jowls and double chin, before & after","Real XL side profiles. Now 50% off.","XL side-profile before/afters only. No percentages, and no day counts in the subject.","Get the XL → "+XL)]},
+ {d:18,dow:"Wed",ph:"bf",title:"Eye Lift results · routine",sends:[
+  s("AM","BF 10","eye","Results","Hooded lids, lifted in minutes","Unretouched before & afters. Pre-order at 50% off.","The six PDP before/afters (\"Actual unretouched images\") and one UGC still. Pre-order CTA.","Pre-order now → "+EYE),
+  s("PM","BF 11","site","Sets","Head to neck, all 50% off","Build your routine: eyes, face, neck and sets.","Routine by zone, then sets (Your Best Face Set, XL Duo Set, Original + XL Duo). Sets clear $150 for the free Lip Plumper, if set prices confirm.","Build my routine → "+ALL)]},
+ {d:19,dow:"Thu",ph:"bf",title:"Gifting · Facelift results",sends:[
+  s("AM","BF 12","site","Gifting","The beauty gift everyone wants, 50% off","Wands and sets for everyone on your list, plus a free Lip Plumper over $150.","Holiday gift guide by recipient and budget, with the $150 gift threshold called out.","Shop gifts → "+ALL),
+  s("PM","BF 13","face","Results","Forehead lines, smile lines, sagging: see the difference","Facelift before & afters, now 50% off.","Before/afters only, with the 2-hour visible-results line.","See the difference → "+FACE)]},
+ {d:20,dow:"Fri",ph:"bf",title:"XL Duo science · results",sends:[
+  s("AM","BF 14","neck","Science","The XL Duo: double the wands, 50% off","Harvard-researched fat-melting science, now in a set.","XL science recap, then the XL Duo Set and Original + XL Duo as value plays. No percentages.","Shop neck → /collections/neck"),
+  s("PM","BF 15","site","Results","The before & afters everyone's talking about","Unretouched results across every wand, all 50% off.","A results wall: two before/afters per wand. No stats.","See the results → "+ALL)]},
+ {d:21,dow:"Sat",ph:"bf",title:"Best-sellers · Eye Lift study",sends:[
+  s("AM","BF 16","site","Reviews","Our 3 best-sellers, 50% off","Ranked by your reviews. Free Lip Plumper over $150.","The three wands ranked by reviews, one quote each, then sets.","Shop best-sellers → "+ALL),
+  s("PM","BF 17","eye","Science","The eye lift without a surgeon, 50% off","95% saw a significant lift. Pre-order before they're gone.","SBLA66Peptide™ (patent-pending) + the study, then press logos (Allure, Vogue, Harper's Bazaar, Prevention).","Pre-order now → "+EYE)]},
+ {d:22,dow:"Sun",ph:"bf",title:"Facelift science + results",sends:[
+  s("AM","BF 18","face","Science + results","No needles. Visible in 2 hours. 50% off.","The Liquid Facelift Wand study and before & afters.","100% study stat, then before/afters, then the free Lip Plumper band.","Get the Facelift Wand → "+FACE)]},
+ {d:23,dow:"Mon",ph:"bf",title:"Thanksgiving week · XL",sends:[
+  s("AM","BF 19","site","Launch","Thanksgiving week: 50% off + a free gift","Everything is half off, plus a free Lip Plumper over $150.","Week-of-Thanksgiving reset: offer-first hero, three wands, gift band.","Shop Black Friday → "+ALL),
+  s("PM","BF 20","neck","Science + results","The science of a sharper jawline, 50% off","Harvard-researched science and real side profiles.","Irisin science, then XL side-profile before/afters. No percentages.","Get the XL → "+XL)]},
+ {d:24,dow:"Tue",ph:"bf",title:"Eye Lift pre-order · sets",sends:[
+  s("AM","BF 21","eye","Science + results","Pre-order the Eye Lift Wand before it's gone","95% saw a lifted eyelid. Now 50% off.","Short study recap plus two before/afters. Pre-order urgency.","Pre-order now → "+EYE),
+  s("PM","BF 22","site","Sets","Sets that unlock a free Lip Plumper","Your Best Face Set, XL Duo and more, all 50% off.","Sets only, each tagged with whether it clears $150 (confirm set prices).","Shop sets → "+ALL)]},
+ {d:25,dow:"Wed",ph:"bf",title:"Facelift results · gifting",sends:[
+  s("AM","BF 23","face","Results","Smoother, firmer, fuller: Facelift before & afters","Visible in 2 hours. Now 50% off.","Before/afters only.","See the results → "+FACE),
+  s("PM","BF 24","site","Gifting","Gifts for everyone at your table, 50% off","Every wand and set, plus a free Lip Plumper over $150.","Gift guide refresh before the holiday.","Shop gifts → "+ALL)]},
+ {d:26,dow:"Thu",ph:"bf",title:"Thanksgiving",note:"Last day of the $150 threshold.",sends:[
+  s("AM","BF 25","site","Thank you","Thankful for you: 50% off + a free gift","Happy Thanksgiving. Everything is half off, plus a free Lip Plumper over $150.","Short, warm note, then the three wands.","Shop now → "+ALL),
+  s("PM","BF 26","site","Tease","Tomorrow: a free Lip Plumper with any order","Our Black Friday Special Event starts at midnight.","Teases the Special Event. Optional: if a tease might hold back Thursday orders, swap in an Eye Lift pre-order email.","Get a reminder → "+ALL)]},
+ {d:27,dow:"Fri",ph:"ev",title:"Black Friday Special Event",sends:[
+  s("AM","BF Event 1","site","Launch","Black Friday Special Event: a free gift with every order","50% off everything, plus a free Lip Plumper with any purchase. No minimum.","Special Event look. Offer-first hero, then \"no minimum\" in big type, then the three wands.","Shop the event → "+ALL),
+  s("PM","BF Event 2","eye","Pre-order","Eye Lift Wand, 50% off + a free Lip Plumper","Pre-order now, before they're all gone.","Best-seller framing, one before/after, pre-order urgency.","Pre-order now → "+EYE)]},
+ {d:28,dow:"Sat",ph:"ev",title:"XL results · reviews",sends:[
+  s("AM","BF Event 3","neck","Results","Jawline goals, 50% off + a free gift","XL before & afters, and a free Lip Plumper with any order.","XL and Duo side-profile before/afters. No percentages.","Shop neck → /collections/neck"),
+  s("PM","BF Event 4","site","Reviews","1,000+ five-star reviews + a free gift","Every wand 50% off, free Lip Plumper with any order.","Reviews wall, then the three wands.","Shop the event → "+ALL)]},
+ {d:29,dow:"Sun",ph:"ev",title:"Facelift · Cyber Monday early",note:"Two sends on a Sunday because it's peak weekend. Drop the PM to match other Sundays.",sends:[
+  s("AM","BF Event 5","face","Results","The Liquid Facelift Wand, 50% off + a free gift","Visible results in 2 hours, plus a free Lip Plumper.","Before/afters and the 2-hour line.","Get the Facelift Wand → "+FACE),
+  s("PM","Cyber Monday 0","site","Early access","Cyber Monday starts now","Same 50% off + free Lip Plumper, a day early.","Cyber Monday look debuts early. Offer-first.","Shop Cyber Monday → "+ALL)]},
+ {d:30,dow:"Mon",ph:"cm",title:"Cyber Monday",sends:[
+  s("AM","Cyber Monday 1","site","Launch","Cyber Monday: 50% off + a free Lip Plumper","Every wand and set, with a free gift on any order.","Cyber Monday look. Offer, three wands, sets.","Shop Cyber Monday → "+ALL),
+  s("PM","Cyber Monday 2","site","Countdown","Final hours: Cyber Monday ends at midnight","50% off + a free Lip Plumper, until midnight ET.","Countdown timer, three wands. Confirm the offer really ends Nov 30 before saying so.","Shop before midnight → "+ALL)]},
 ];
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+DAYS.forEach(x=>{ if(x.d<=10 && !x.off) x.ph="40"; });
+const esc=v=>String(v).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const phOf=x=>x.ph==="cm"?"ev":x.ph;
+const TODAY=10; // days on or before this date are already sent
+let filter="all";
 function tile(x){
-  const el=document.createElement(x.off?"div":"button");
-  el.className="day"+(x.off?" off":"")+(x.empty?" empty":"");
+  const off=x.off||(!x.sends&&!x.subj);
+  const el=document.createElement(off?"div":"button");
+  el.className="day"+(off?" off":"")+(x.empty?" empty":"")+(x.d<=TODAY?" past":"");
   el.setAttribute("role","gridcell");
   let h=`<div class="dnum"><span>${x.d}</span><small>${x.dow}</small></div>`;
-  if(x.off){ h+= x.note?`<div class="offnote">${esc(x.note)}</div>`:""; el.innerHTML=h; return el;}
+  if(off){ h+= x.note?`<div class="offnote">${esc(x.note)}</div>`:""; el.innerHTML=h; return el;}
   el.type="button"; el.dataset.d=x.d;
-  el.setAttribute("aria-label",`Nov ${x.d}: ${x.tag}. ${x.subj}`);
-  h+=`<div class="stripe s-${x.kind}"></div><span class="chip k-${x.kind}" style="align-self:flex-start">${esc(x.tag)}</span>`;
-  h+=`<div class="subj">${esc(x.subj)}</div><div class="focus">${esc(x.title)} · AM ${x.am}, PM 6pm ET</div>`;
-  if(x.segs.length){h+=`<div class="segs"><div class="lbl">Segment email</div>${x.segs.map(s=>`<div class="seg"><span><b>${esc(s[0])}</b><br>“${esc(s[2])}”</span></div>`).join("")}</div>`}
-  else h+=`<div class="segs"><div class="lbl">No segment email</div></div>`;
-  el.innerHTML=h; el.addEventListener("click",()=>{show(x.d);document.getElementById("detail").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});}); return el;
+  if(x.sends){
+    const [pc,pl]=PH[x.ph];
+    el.setAttribute("aria-label",`Nov ${x.d}: ${pl}. `+x.sends.map(z=>`${z.t} ${z.code}: ${z.subj}`).join(". "));
+    h+=`<span class="phase ${pc}">${pl}</span>`;
+    h+=x.sends.map(z=>`<div class="slot"><span class="tm">${z.t}</span><span class="code"><i class="i-${z.kind}"></i>${esc(z.code)} · ${esc(z.type)}</span><span class="st">${esc(z.subj)}</span></div>`).join("");
+  } else {
+    el.setAttribute("aria-label",`Nov ${x.d}: ${x.tag}. ${x.subj}`);
+    h+=`<span class="phase p-40">40% off · sent</span><div class="stripe s-${x.kind}"></div><span class="chip k-${x.kind}" style="align-self:flex-start">${esc(x.tag)}</span>`;
+    h+=`<div class="subj">${esc(x.subj)}</div><div class="focus">${esc(x.title)}</div>`;
+    h+=x.segs.length?`<div class="segs"><div class="lbl">Segment email</div>${x.segs.map(g=>`<div class="seg"><span><b>${esc(g[0])}</b></span></div>`).join("")}</div>`:"";
+  }
+  el.innerHTML=h;
+  el.addEventListener("click",()=>{show(x.d);document.getElementById("detail").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});});
+  return el;
 }
-const w1=document.getElementById("w1"),w2=document.getElementById("w2");
-DAYS.forEach((x,i)=>(i<7?w1:w2).appendChild(tile(x)));
+function render(){
+  const W=document.getElementById("weeks"); W.innerHTML="";
+  let list=DAYS.slice();
+  if(filter!=="all"){
+    const inPh=list.filter(x=>x.sends&&phOf(x)===filter).map(x=>x.d);
+    const lo=Math.min(...inPh), hi=Math.max(...inPh);
+    const start=lo-((lo-1)%7), end=hi+(6-((hi-1)%7));
+    list=list.filter(x=>x.d>=start&&x.d<=end).map(x=>x.d>=lo&&x.d<=hi?x:{d:x.d,dow:x.dow,off:true,empty:true});
+  }
+  for(let i=0;i<list.length;i+=7){
+    const wk=document.createElement("div"); wk.className="week"; wk.setAttribute("role","row");
+    list.slice(i,i+7).forEach(x=>wk.appendChild(tile(x)));
+    while(wk.children.length<7){const e=document.createElement("div");e.className="day off empty";wk.appendChild(e);}
+    W.appendChild(wk);
+  }
+}
 function show(d){
   const x=DAYS.find(y=>y.d===d); if(!x||x.off) return;
   document.querySelectorAll(".day").forEach(b=>b.classList.toggle("sel",b.dataset.d==String(d)));
-  const segs=x.segs.length?`<div class="tbl"><table><thead><tr><th>Segment email</th><th>Who gets it</th><th>Subject line</th><th>What's different</th></tr></thead><tbody>${x.segs.map(s=>`<tr><td><b>${esc(s[0])}</b></td><td>${esc(s[1])}</td><td>${esc(s[2])}</td><td>${esc(s[3])}</td></tr>`).join("")}</tbody></table></div>`
-   :`<p class="none">Sitewide day: everyone gets the primary email.</p>`;
-  document.getElementById("detail").innerHTML=`
-   <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px"><span class="chip k-${x.kind}"><i class="dot"></i>${esc(x.tag)}</span><span class="meta">${x.dow}, Nov ${x.d}, 2026</span></div>
+  const D=document.getElementById("detail");
+  if(x.sends){
+    const [pc,pl]=PH[x.ph]; const am=["Sat","Sun"].includes(x.dow)?"11am ET":"9am ET";
+    D.innerHTML=`
+     <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px"><span class="phase ${pc}">${pl}</span><span class="meta">${x.dow}, Nov ${x.d}, 2026 · ${x.sends.length===1?"one send":"two sends"}</span></div>
+     <h2>${esc(x.title)}</h2>
+     <div class="offer">Offer: ${esc(OFFERS[phOf(x)])}</div>
+     ${x.note?`<p class="none" style="margin:0">${esc(x.note)}</p>`:""}
+     <div class="cards">${x.sends.map(z=>`
+       <div class="card">
+         <div class="top"><span class="chip k-${z.kind}"><i class="dot"></i>${esc(z.code)}</span><span class="meta">${z.t} · ${z.t==="AM"?am:"6pm ET"} · ${esc(z.type)}</span></div>
+         <div class="subjL">${esc(z.subj)}</div>
+         <div class="pv">Preview: ${esc(z.prev)}</div>
+         <dl><dt>Angle</dt><dd>${esc(z.angle)}</dd><dt>CTA</dt><dd>${esc(z.cta)}</dd></dl>
+       </div>`).join("")}</div>`;
+    return;
+  }
+  const segs=x.segs.length?`<div class="tbl"><table><thead><tr><th>Segment email</th><th>Who gets it</th><th>Subject line</th><th>What's different</th></tr></thead><tbody>${x.segs.map(g=>`<tr><td><b>${esc(g[0])}</b></td><td>${esc(g[1])}</td><td>${esc(g[2])}</td><td>${esc(g[3])}</td></tr>`).join("")}</tbody></table></div>`
+   :`<p class="none">Sitewide day: everyone got the primary email.</p>`;
+  D.innerHTML=`
+   <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px"><span class="phase p-40">40% off · sent</span><span class="chip k-${x.kind}"><i class="dot"></i>${esc(x.tag)}</span><span class="meta">${x.dow}, Nov ${x.d}, 2026</span></div>
    <h2>${esc(x.title)}</h2>
    <div class="sends">
      <div class="send"><div class="t">AM · ${x.am}</div><div class="s">${esc(x.subj)}</div><div class="a">Preview: ${esc(x.prev)}</div></div>
@@ -217,7 +353,11 @@ function show(d){
      <div style="min-width:0"><h3>Same-day segment email</h3>${segs}</div>
    </div>`;
 }
-show(4);
+document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>{
+  filter=b.dataset.ph; document.querySelectorAll(".tabs button").forEach(o=>o.setAttribute("aria-pressed",String(o===b)));
+  render(); const first=DAYS.find(x=>x.sends&&(filter==="all"?x.d===11:phOf(x)===filter)); show(first.d);
+}));
+render(); show(11);
 </script>
 
 </body>
