@@ -271,9 +271,9 @@ const DAYS = [
  {d:29,dow:"Sun",ph:"ev",title:"Facelift · Cyber Monday early",note:"Two sends on a Sunday because it's peak weekend. Drop the PM to match other Sundays.",sends:[
   s("AM","BF Event 5","face","Results","The Liquid Facelift Wand, 50% off + a free gift","Visible results in 2 hours, plus a free Lip Plumper.","Before/afters and the 2-hour line.","Get the Facelift Wand → "+FACE),
   s("PM","Cyber Monday 0","site","Early access","Cyber Monday starts now","Same 50% off + free Lip Plumper, a day early.","Cyber Monday look debuts early. Offer-first.","Shop Cyber Monday → "+ALL)]},
- {d:30,dow:"Mon",ph:"cm",title:"Cyber Monday",sends:[
+ {d:30,dow:"Mon",ph:"cm",title:"Cyber Monday",note:"Possible Cyber Monday extension on Dec 1, to be decided.",sends:[
   s("AM","Cyber Monday 1","site","Launch","Cyber Monday: 50% off + a free Lip Plumper","Every wand and set, with a free gift on any order.","Cyber Monday look. Offer, three wands, sets.","Shop Cyber Monday → "+ALL),
-  s("PM","Cyber Monday 2","site","Countdown","Final hours: Cyber Monday ends at midnight","50% off + a free Lip Plumper, until midnight ET.","Countdown timer, three wands. Confirm the offer really ends Nov 30 before saying so.","Shop before midnight → "+ALL)]},
+  s("PM","Cyber Monday 2","site","Countdown","Cyber Monday ends at midnight","Hours left: 50% off + a free Lip Plumper.","Same as Singles Day: countdown timer, then the three wands. Say \"Cyber Monday ends\", not \"50% off ends\", so an extension stays open.","Shop before midnight → "+ALL)]},
 ];
 DAYS.forEach(x=>{ if(x.d<=10 && !x.off) x.ph="40"; });
 const esc=v=>String(v).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
